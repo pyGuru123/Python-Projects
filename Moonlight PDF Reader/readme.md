@@ -12,7 +12,7 @@ Moonlight PDF Reader is a simple python tkinter based application to read pdfs w
 * Merge PDF
 * Watermarking PDF
 
-![Alt text](app.png?raw=true "Desktop Wallpaper Changer")
+![Alt text](app.png?raw=true "Moonlight PDF Reader")
 
 Page zooming and navigation, opening recently opened files is also possible. Moonlight PDF Reader leverages the features of muPDF library which is available in python under pymupdf name
 
@@ -39,25 +39,25 @@ List of shortcut commands
 
 Features
 
-* Text Extraction
+* Text Extraction : 
     Click save as text under Home after opening a pdf file to extract text from the currently opened page
-* Page Extraction
+* Page Extraction : 
     Click Extract page under tools to extract the current page and save as pdf
-* Extract Images
+* Extract Images : 
     Click Extract Images under tools to extract all the images in the current page
-* Rotate Images
+* Rotate Images : 
     Click Rotate Images under tools to rotate the currently opened page or mark rotate all to rotate all the pages of the pdf and save as a new file. Rotation is only possible in 90 clockwise, 90 anticlockwise and turn up side down by 180
-* Export PDF
+* Export PDF : 
     Click Export PDF under tools to export the current page to png / html / xml file
-* Encrypt PDF
+* Encrypt PDF : 
     Click Encrypt PDF under tools to encrypt the PDF by using AES 256 Encryption by entering a password and save as new PDF
-* Decrypt PDF
+* Decrypt PDF : 
     Click Decrypt PDF under tools to decrypt and remove the current password from the pdf and save as new PDF
-* Split PDF
+* Split PDF : 
     Click Split PDF under tools to split the pdf from the entered vale of from page upto entered value of to page. Remember pages under split are zero based. So to split page 2-4 enter the value of from = 1 and value of to = 3
-* Merge PDF
+* Merge PDF : 
     Click Merge PDF under tools to merge the entered pages into a new selected pdf file. Remember page index here begins with zero too, also these pages will be inserted at the end of the selected PDF file
-* Watermark PDF
+* Watermark PDF : 
     Click Watermark PDF under tools to watermark selected png or jpg file to the current pdf page. Enter the top left and bottom right coordinates of rectangle to insert the selected image inside the rectangle.
 
 

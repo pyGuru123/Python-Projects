@@ -50,7 +50,7 @@ def scrape_data():
 	df  = df[7:]
 	df.reset_index(drop=True, inplace=True)
 
-	filename = 'corona-cases.csv'
+	filename = 'files/corona-cases.csv'
 	df.to_csv(filename)
 
 	return 1

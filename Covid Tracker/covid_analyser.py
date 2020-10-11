@@ -2,7 +2,7 @@ import os
 import pandas as pd
 
 def read_stats_file():
-	filename = 'corona-cases.csv'
+	filename = 'files/corona-cases.csv'
 	if os.path.exists(filename):
 		df = pd.read_csv(filename)
 
