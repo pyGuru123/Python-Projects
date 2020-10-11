@@ -1,0 +1,9 @@
+Moonlight PDF Reader
+
+Moonlight PDF reader is a simple image
+based PDF reader created with python.
+
+Dependencies : pymupdf, pillow 
+
+@Author : Prajjwal Pathak (pyGuru)
+@Created: 2020-10-11 11:10:00
