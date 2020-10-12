@@ -42,13 +42,13 @@ You can get the api keys from here
 ##### After collecting api keys, put them under [creds] in config.cfg file which is available in TARSdata folder.  Example:
 
 replace following with 
-> [creds]
-> NewsApi = None
+> [creds] \ 
+> NewsApi = None \ 
 > OpenWeatherApi = None
 
 with api respective api keys
-> [creds]
-> NewsApi = 0d48912cbe864506a076545fdfd545
+> [creds] \ 
+> NewsApi = 0d48912cbe864506a076545fdfd545 \ 
 > OpenWeatherApi = a3f541eba5644354343gdfdff4545
 
 ## Usage
@@ -57,14 +57,14 @@ Double click the application.pyw to open the GUI application, then start typing 
 
 [ List of T.A.R.S. Commands ]
 
-[i] : requires internet connection
+[i] : requires internet connection \ 
 [o] : works offline
 
 * time : get current time [o]
 * date : get current date [o]
 * calculator : opens windows calculator app [o]
 * calc : calculates the following expression [o]
-* calendar : get the calendar [o]
+* calendar : get the calendar [o] \ 
 
 * joke : get random jokes [i]
 * news : get latest news headlines [i]
@@ -95,12 +95,12 @@ calculator | usage
 > open the calculator
 
 calc  
-> calc : 10 + 5 + 12
-> calc : 23 * 5 / 6
+> calc : 10 + 5 + 12 \ 
+> calc : 23 * 5 / 6 \ 
 > what is the sum of 50 and 60
 
 calendar | usage
-> calendar : 2020
+> calendar : 2020 \ 
 > calendar : 2018
 
 #### Requires internet
@@ -109,63 +109,63 @@ joke | usage
 > get me a random joke or tell me something funny
 
 news | usage
-> get me todays headlines
-> tell me science news
-> get me entertainment updates
+> get me todays headlines \ 
+> tell me science news \ 
+> get me entertainment updates \ 
 > get me technology news
 
 quote | usage
 > get me a quote
 
 weather | usage
-> weather : varanasi
+> weather : varanasi \ 
 > weather : kanpur
 
 country | usage
-> country : india
+> country : india \ 
 > country : japan
 
 query | | usage
-> what is the capital of india
-> who is Narendra modi
-> where is Niagra falls
-> when did humans landed on moon
+> what is the capital of india \ 
+> who is Narendra modi \ 
+> where is Niagra falls \ 
+> when did humans landed on moon \ 
 > which is the largest building in the world
 
 math | usage
-> get me a random math fact
+> get me a random math fact \ 
 > tell me something interesting about numbers
 
 meaning | usage
-> meaning : mango
-> meaning : energy
+> meaning : mango \ 
+> meaning : energy \ 
 > meaning : turmeric
 
 image | usage
-> image : sunset
-> image : cat
+> image : sunset \ 
+> image : cat \ 
 > image : captain america
 
 meme | usage
-> get me a meme
+> get me a meme \
 > send a funny meme
 
 google | usage
-> google : alpha particles
+> google : alpha particles \
 > google : www.google.com
 
 wiki | usage
-> wiki : alpha particles
+> wiki : alpha particles \
 > wiki : narendra modi
 
 histroy | usage
-> history : 22 june
-> history : 21 november
+> history : 22 june \
+> history : 21 november \ 
 
 animals | usage
-> tell me something about birds
-> what about dogs
-> ok cats
+> tell me something about birds \
+> what about dogs \ 
+> ok cats 
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
