@@ -1,0 +1,24 @@
+*----- Help on T.A.R.S. -----*
+
+[ libraries needed to run T.A.R.S. errorfree ]
+
+* Requests 		| to request data from internet
+	installation method : pip install requests
+
+* BeautifulSoup | scrape data from websites
+	installation method : pip install beautifulsoup4
+
+* PIL 			| to work with images
+	installation method : pip install pillow
+
+* Speech_recog  | to convert speech to text
+	installation method : pip install SpeechRecognition
+
+* Pypiwin32 | to request data from internet
+	installation method : pip install pypiwin32
+
+* PyAudio 			| to work with images
+	installation method : download and install wheel file
+
+
+*** These libraries are must

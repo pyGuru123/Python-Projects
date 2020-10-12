@@ -1,0 +1,11 @@
+*------ Help for T.A.R.S. -------*
+
+T.A.R.S. is a simple virtual assistant developed by Prajjwal Pathak aka pyGuru
+
+T.A.R.S. makes use of sevral apis, system services, web scraping and chatbot system to give you the best possible closest result to your query
+
+Here are the commands that you can try to use T.A.R.S.
+
+* --help|--h      : to get help related to T.A.R.S.
+* --commands|--c  : to list all the available commands
+* --libraries|--l : to list required libraries to be installed
