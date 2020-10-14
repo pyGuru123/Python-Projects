@@ -6,6 +6,10 @@ Covid Tracker is a simple python based covid cases tracking application made usi
 
 You can search for individual country stats by writing the country name in the entry and then either clicking search or pressing enter key. You can also check top 10 country stats from the button at the left bottom part of the app
 
+## How to Download
+
+Download this project from here [Download Covid Tracker](https://downgit.github.io/#/home?url=https:%2F%2Fgithub.com%2FpyGuru123%2FPython-Projects%2Ftree%2Fmaster%2FCovid%20Tracker)
+
 ## Requirements
 
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install following libraries : 

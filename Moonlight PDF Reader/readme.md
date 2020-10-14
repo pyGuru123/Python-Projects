@@ -16,6 +16,10 @@ Moonlight PDF Reader is a simple python tkinter based application to read pdfs w
 
 Page zooming and navigation, opening recently opened files is also possible. Moonlight PDF Reader leverages the features of muPDF library which is available in python under pymupdf name
 
+## How to Download
+
+Download this project from here [Download Moonlight PDF Reader](https://downgit.github.io/#/home?url=https://github.com/pyGuru123/Python-Projects/tree/master/Moonlight%20PDF%20Reader)
+
 ## Requirements
 
 PyMuPDF : Use the package manager [pip](https://pip.pypa.io/en/stable/) to install PyMuPDF.

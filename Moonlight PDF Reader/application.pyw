@@ -706,21 +706,15 @@ class PDFReader(tk.Frame):
 			1.6 : 2
 		}
 
-		if self.zoom <= 1:
-			self.output.configure(scrollregion=(0,0,self.pagewidth + 80,self.pageheight+30))
-		elif self.zoom == 1.2:
-			self.output.configure(scrollregion=(0,0,self.pagewidth + 180,self.pageheight+170))
-		elif self.zoom == 1.4:
-			self.output.configure(scrollregion=(0,0,self.pagewidth + 320,self.pageheight+290))
-		elif self.zoom == 1.6:
-			self.output.configure(scrollregion=(0,0,self.pagewidth + 430,self.pageheight+430))
-
 		self.zoomtext = f'{self.zoom * 100:.0f} %'
 		self.zoomlabel['text'] = self.zoomtext
 
 		x = dct[self.zoom]
 		self.img_file = self.miner.get_page(self.current_page, self.zoom)
 		self.output.create_image(x, 10, anchor='nw', image=self.img_file)
+
+		region = self.output.bbox(tk.ALL)
+		self.output.configure(scrollregion=region)
 
 	def zoom_in(self, event=None):
 		# zoom in the pdf page
