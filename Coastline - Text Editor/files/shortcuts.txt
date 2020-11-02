@@ -1,0 +1,16 @@
+* Ctrl + N 	                    : Create new file
+* Ctrl + O 	                    : Open new file
+* Ctrl + S 	                    : Save file
+* Ctrl + Shift + S           : Save as file
+* Ctrl + P                       : Print page
+* Ctrl + Q                       : Exit
+* Ctrl + X                       :  Cut text
+* Ctrl + C                       :  Copy text
+* Ctrl + V                       :  Paste text
+* Ctrl + A                       :  Select All text
+* Delete                         :  Delete selected text
+* Ctrl + Z                        :  Undo
+* Ctrl + Y                        :  Redo
+* Ctrl +F                         :  Find
+* Ctrl + H                       :  Find and replace
+* Ctrl + R                       : Search Regex
