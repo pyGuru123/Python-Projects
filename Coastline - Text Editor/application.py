@@ -713,7 +713,8 @@ def show_shortcuts():
 		func.grid(row=row+1, column=1)
 
 def get_help():
-	webbrowser.open('www.wikipedia.com')
+	url = 'https://github.com/pyGuru123/Python-Projects/blob/master/Coastline%20-%20Text%20Editor/readme.md'
+	webbrowser.open(url)
 
 if __name__ == '__main__':
 	app = TextEditor()

@@ -1,4 +1,20 @@
-# visit pyGuru on youTube
+#! python3
+"""
+@created: 2020-10-12 07:36:35
+@author: Prajjwal Pathak ( pyGuru )
+
+Covid Tracker
+
+-------------------------------------------------------------------------------
+Dependencies:
+
+* Requests, BeautifulSoup4, Pandas and Matplotlib
+
+-------------------------------------------------------------------------------
+Description : 
+Covid Tracker is a python tkinter based covid tracking application which can give
+you covid stats from all around the world.
+"""
 
 import os, sys
 import shelve

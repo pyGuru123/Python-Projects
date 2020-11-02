@@ -1,3 +1,21 @@
+#! python3
+"""
+@created: 2020-10-18 07:36:35
+@author: Prajjwal Pathak ( pyGuru )
+
+Weatherzilla - Weather App
+
+-------------------------------------------------------------------------------
+Dependencies:
+
+* requests, pillow
+
+-------------------------------------------------------------------------------
+Description : 
+Weatherzilla - Weather App is a simple python based weather search application
+made using the requests and tkinter library.
+"""
+
 import sys
 import random
 import datetime

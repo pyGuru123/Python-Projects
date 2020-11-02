@@ -1,3 +1,22 @@
+#! python3
+"""
+@created: 2020-09-25 07:36:35
+@author: Prajjwal Pathak ( pyGuru )
+
+TARS Virtual Assistant
+
+-------------------------------------------------------------------------------
+Dependencies:
+
+* requests, beautifulsoup4, pillow, speechrecognition, pypiwin32, pyaudio
+
+-------------------------------------------------------------------------------
+Description : 
+TARS Virtual Assistant is a simple python tkinter based virtual assistant 
+application which can do quick google searches for you, along with retrieving
+images, telling you a joke, random facts, give meanings of words
+"""
+
 import re
 import services
 import tkinter as tk
