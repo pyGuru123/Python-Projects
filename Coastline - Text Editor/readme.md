@@ -12,7 +12,7 @@ Coastline Text Editor is a simple python tkinter based text editor application l
 
 ## How to Download
 
-Download this project from here [Download Coastline Text Editor](https://downgit.github.io/#/home?url=https://github.com/pyGuru123/Python-Projects/tree/master/Coastline%20Text%20Editor)
+Download this project from here [Download Coastline Text Editor](https://downgit.github.io/#/home?url=https://github.com/pyGuru123/Python-Projects/tree/master/Coastline%20-%20Text%20Editor)
 
 ## Requirements
 
@@ -29,15 +29,15 @@ List of shortcut commands
 * Ctrl + Shift + S              : Save as file
 * Ctrl + P                      : Print page
 * Ctrl + Q                      : Exit
-* Ctrl + X                      :  Cut text
-* Ctrl + C                      :  Copy text
-* Ctrl + V                      :  Paste text
-* Ctrl + A                      :  Select All text
-* Delete                        :  Delete selected text
-* Ctrl + Z                      :  Undo
-* Ctrl + Y                      :  Redo
-* Ctrl +F                       :  Find
-* Ctrl + H                      :  Find and replace
+* Ctrl + X                      : Cut text
+* Ctrl + C                      : Copy text
+* Ctrl + V                      : Paste text
+* Ctrl + A                      : Select All text
+* Delete                        : Delete selected text
+* Ctrl + Z                      : Undo
+* Ctrl + Y                      : Redo
+* Ctrl +F                       : Find
+* Ctrl + H                      : Find and replace
 * Ctrl + R                      : Search Regex
 
 

@@ -149,6 +149,11 @@ class TextEditor(tk.Tk):
 		self.find_icon = PhotoImage(file='icons/find.png')
 		self.find_replace_icon = PhotoImage(file='icons/find_replace.png')
 
+		self.default_theme_icon = PhotoImage(file='icons/default.png')
+		self.dark_theme_icon = PhotoImage(file='icons/dark.png')
+		self.sunny_theme_icon = PhotoImage(file='icons/sunny.png')
+		self.sunset_theme_icon = PhotoImage(file='icons/sunset.png')
+
 
 	# widgets -----------------------------------------------------------------------------------
 
@@ -157,7 +162,7 @@ class TextEditor(tk.Tk):
 		file_menu = tk.Menu(menu, tearoff=False)
 		edit_menu = tk.Menu(menu, tearoff=False)
 		lambda_menu = tk.Menu(menu, tearoff=False)
-		color_menu = tk.Menu(menu, tearoff=False)
+		themes_menu = tk.Menu(menu, tearoff=False)
 		help_menu = tk.Menu(menu, tearoff=False)
 
 		# file_menu
@@ -192,15 +197,22 @@ class TextEditor(tk.Tk):
 		lambda_menu.add_separator()
 		lambda_menu.add_command(label='Time/Date', compound=tk.LEFT, image=self.datetime_icon, command=self.current_date_time)
 
+		# themes menu
+		themes_menu.add_command(label=' Default', compound=tk.LEFT, image=self.default_theme_icon, command=self.default_theme)
+		themes_menu.add_command(label=' Dark', compound=tk.LEFT, image=self.dark_theme_icon, command=self.dark_theme)
+		themes_menu.add_command(label=' Sunny', compound=tk.LEFT, image=self.sunny_theme_icon, command=self.sunny_theme)
+		themes_menu.add_command(label=' Sunset', compound=tk.LEFT, image=self.sunset_theme_icon, command=self.sunset_theme)
+
 		# help_menu
 		help_menu.add_command(label='Help on Coastline', compound=tk.LEFT, image=self.help_icon, command=get_help)
 		help_menu.add_command(label='Shortcut Keys', compound=tk.LEFT, image=self.shortcut_icon, command=show_shortcuts)
-		help_menu.add_command(label='About Coastline', compound=tk.LEFT, image=self.coastline_icon)
+		help_menu.add_command(label='About Coastline', compound=tk.LEFT, image=self.coastline_icon, command=show_about)
 
 		menu.add_cascade(label='File', menu=file_menu)
 		menu.add_cascade(label='Edit', menu=edit_menu)
 		menu.add_cascade(label='Lambda', menu=lambda_menu)
 		menu.add_command(label='Regex', command=self.find_regex)
+		menu.add_cascade(label='Themes', menu=themes_menu)
 		menu.add_cascade(label='Help', menu=help_menu)
 		self.config(menu=menu)
 
@@ -667,13 +679,43 @@ class TextEditor(tk.Tk):
 			else:
 				messagebox.showinfo('Coastline', 'No occurence found')
 
+	def default_theme(self):
+		self.textbox['bg'] = 'white'
+		self.textbox['fg'] ='black'
+		self.textbox['insertbackground'] = 'black'
+		self.status['bg'] = 'gray70'
+		self.status['fg'] = 'black'
+
+	def dark_theme(self):
+		self.textbox['bg'] = 'gray12'
+		self.textbox['fg'] = 'white'
+		self.textbox['insertbackground'] = 'white'
+		self.status['bg'] = 'gray20'
+		self.status['fg'] = 'snow'
+
+	def sunny_theme(self):
+		self.textbox['bg'] = 'SkyBlue1'
+		self.textbox['fg'] = 'blue4'
+		self.textbox['insertbackground'] = 'blue2'
+		self.status['bg'] = 'LightSkyBlue3'
+		self.status['fg'] = 'dark green'
+
+	def sunset_theme(self):
+		self.textbox['bg'] = 'coral1'
+		self.textbox['fg'] = 'white'
+		self.textbox['insertbackground'] = 'white'
+		self.status['bg'] = 'sienna1'
+		self.status['fg'] = 'white'
+
 
 # def custom functions --------------------------------------------------------------------
+
 def find_and_replace_window():
 		win = tk.Toplevel()
 		win.wm_title('Coastline')
 		win.geometry('230x110+150+150')
 		win.iconbitmap('icons/coastline.ico')
+		win.wm_resizable(0,0)
 
 		find = tk.StringVar()
 		replace = tk.StringVar()
@@ -693,6 +735,22 @@ def find_and_replace_window():
 		e1.focus_set()
 		win.wait_window()
 		return find.get(), replace.get()
+
+def show_about():
+	win = tk.Toplevel()
+	win.wm_title('Coastline')
+	win.iconbitmap('icons/coastline.ico')
+	win.wm_resizable(0,0)
+
+	label = tk.Label(win, text='Coastline - A modern day text Editor', fg='red',
+				font=('Calibri', 12))
+	label.grid(row=0, column=0)
+	text = tk.Text(win, width=30, height=4)
+	text.insert(tk.END, 'Author : Prajjwal Pathak \n')
+	text.insert(tk.END, 'Version : 1.0.01 \n')
+	text.insert(tk.END, 'Build : 1107')
+	text.grid(row=1, column=0)
+	text.configure(state='disabled')
 
 def show_shortcuts():
 	with open('files/shortcuts.txt') as file:
