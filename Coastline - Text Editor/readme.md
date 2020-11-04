@@ -7,6 +7,7 @@ Coastline Text Editor is a simple python tkinter based text editor application l
 * Find and Replace
 * Arithmetic functions
 * Regex Search
+* Cool themes
 
 ![Alt text](app.png?raw=true "Coastline Text Editor")
 
@@ -44,11 +45,15 @@ List of shortcut commands
 Features
 
 * Find : 
-    To search text just type it in the search entry and press enter, it will higlight the search terms.
+    To search text just type it in the search entry or press Ctrl + F and press enter, it will higlight the search terms.
 * Find and Replace:
     To find and replace, press Ctrl + H to open find and replace dialog box, enter the asked values and click find and replace to update the text
 * Regex Search:
     To use regex search, press Ctrl + R to open the regex search dialog box, type your regex without r or enclosing quotes to make the best possible match
+* Themes:
+	To change themes, select themes from menu bar and select your favorite theme.
+
+* Right Click to get edit context menu
 
 
 ## Contributing

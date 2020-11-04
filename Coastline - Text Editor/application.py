@@ -216,6 +216,16 @@ class TextEditor(tk.Tk):
 		menu.add_cascade(label='Help', menu=help_menu)
 		self.config(menu=menu)
 
+		self.context_menu = tk.Menu(self, tearoff=0)
+		self.context_menu.add_command(label='Cut', command=self.cut_text)
+		self.context_menu.add_command(label='Copy', command=self.copy_text)
+		self.context_menu.add_command(label='Paste', command=self.paste_text)
+		self.context_menu.add_command(label='Delete', command=self.clear_all)
+		self.context_menu.add_command(label='Select All', command=self.select_all)
+		self.context_menu.add_separator()
+		self.context_menu.add_command(label='Undo', command=self.undo)
+		self.context_menu.add_command(label='Redo', command=self.redo)
+
 	def draw_frames(self):
 		self.ribbon = tk.Frame(self, height=40, bg='gray98')
 		self.ribbon.grid(row=0, column=0, columnspan=2, sticky='WENS')
@@ -322,6 +332,7 @@ class TextEditor(tk.Tk):
 		self.textbox.bind("<Down>",  lambda event: self.textbox.yview_scroll( 3, "units"))
 		self.textbox.bind('<KeyPress>', self._on_keyboard_input)
 		self.textbox.bind('<KeyRelease>', self._on_keyboard_input)
+		self.textbox.bind('<Button-3>', self.show_popup)
 
 	def set_tracing(self):
 		self.font_family.trace_add('write', self.change_font)
@@ -541,30 +552,40 @@ class TextEditor(tk.Tk):
 			win32api.ShellExecute(0,"print",filename,'"%s"' % win32print.GetDefaultPrinter (),
 					".",0)
 
+	def show_popup(self, event):
+		self.context_menu.post(event.x_root, event.y_root)
+
 	def copy_text(self, event=None):
 		self.textbox.event_generate("<<Copy>>")
+		self._on_keyboard_input()
 
 	def cut_text(self, event=None):
 		self.textbox.event_generate("<<Cut>>")
+		self._on_keyboard_input()
 
 	def paste_text(self, event=None):
 		self.textbox.event_generate("<<Paste>>")
+		self._on_keyboard_input()
 
 	def select_all(self, event=None):
 		self.textbox.event_generate("<<SelectAll>>")
+		self._on_keyboard_input()
 
 	def clear_all(self, event=None):
 		self.textbox.event_generate("<<Clear>>")
+		self._on_keyboard_input()
 
 	def undo(self, event=None):
 		try:
 			self.textbox.edit_undo()
+			self._on_keyboard_input()
 		except:
 			pass
 
 	def redo(self, event=None):
 		try:
 			self.textbox.edit_redo()
+			self._on_keyboard_input()
 		except:
 			pass
 
