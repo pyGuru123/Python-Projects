@@ -158,12 +158,12 @@ class TextEditor(tk.Tk):
 	# widgets -----------------------------------------------------------------------------------
 
 	def draw_menu(self):
-		menu = tk.Menu(self)
-		file_menu = tk.Menu(menu, tearoff=False)
-		edit_menu = tk.Menu(menu, tearoff=False)
-		lambda_menu = tk.Menu(menu, tearoff=False)
-		themes_menu = tk.Menu(menu, tearoff=False)
-		help_menu = tk.Menu(menu, tearoff=False)
+		self.menu = tk.Menu(self)
+		file_menu = tk.Menu(self.menu, tearoff=False)
+		self.edit_menu = tk.Menu(self.menu, tearoff=False, postcommand=self.enable_selection)
+		lambda_menu = tk.Menu(self.menu, tearoff=False)
+		themes_menu = tk.Menu(self.menu, tearoff=False)
+		help_menu = tk.Menu(self.menu, tearoff=False)
 
 		# file_menu
 		file_menu.add_command(label='New', accelerator='Ctrl+N', compound=tk.LEFT, image=self.new_icon, command=self.new_file)
@@ -177,14 +177,14 @@ class TextEditor(tk.Tk):
 							  command=self.quit)
 
 		# edit_menu
-		edit_menu.add_command(label='Cut', accelerator='Ctrl+X', compound=tk.LEFT, image=self.cut_icon, command=self.cut_text)
-		edit_menu.add_command(label='Copy', accelerator='Ctrl+C', compound=tk.LEFT, image=self.copy_icon, command=self.copy_text)
-		edit_menu.add_command(label='Paste', accelerator='Ctrl+V', compound=tk.LEFT, image=self.paste_icon, command=self.paste_text)
-		edit_menu.add_command(label='Select All', accelerator='Ctrl+A', compound=tk.LEFT, image=self.select_all_icon, command=self.select_all)
-		edit_menu.add_command(label='Clear All', accelerator='Delete', compound=tk.LEFT, image=self.clear_all_icon, command=self.clear_all)
-		edit_menu.add_separator()
-		edit_menu.add_command(label='Undo', accelerator='Ctrl+Z', compound=tk.LEFT, image=self.undo_icon, command=self.undo)
-		edit_menu.add_command(label='Redo', accelerator='Ctrl+Y', compound=tk.LEFT, image=self.redo_icon, command=self.redo)
+		self.edit_menu.add_command(label='Cut', accelerator='Ctrl+X', compound=tk.LEFT, image=self.cut_icon, command=self.cut_text)
+		self.edit_menu.add_command(label='Copy', accelerator='Ctrl+C', compound=tk.LEFT, image=self.copy_icon, command=self.copy_text)
+		self.edit_menu.add_command(label='Paste', accelerator='Ctrl+V', compound=tk.LEFT, image=self.paste_icon, command=self.paste_text)
+		self.edit_menu.add_command(label='Select All', accelerator='Ctrl+A', compound=tk.LEFT, image=self.select_all_icon, command=self.select_all)
+		self.edit_menu.add_command(label='Clear All', accelerator='Delete', compound=tk.LEFT, image=self.clear_all_icon, command=self.clear_all)
+		self.edit_menu.add_separator()
+		self.edit_menu.add_command(label='Undo', accelerator='Ctrl+Z', compound=tk.LEFT, image=self.undo_icon, command=self.undo)
+		self.edit_menu.add_command(label='Redo', accelerator='Ctrl+Y', compound=tk.LEFT, image=self.redo_icon, command=self.redo)
 
 
 		# functions_menu
@@ -208,15 +208,15 @@ class TextEditor(tk.Tk):
 		help_menu.add_command(label='Shortcut Keys', compound=tk.LEFT, image=self.shortcut_icon, command=show_shortcuts)
 		help_menu.add_command(label='About Coastline', compound=tk.LEFT, image=self.coastline_icon, command=show_about)
 
-		menu.add_cascade(label='File', menu=file_menu)
-		menu.add_cascade(label='Edit', menu=edit_menu)
-		menu.add_cascade(label='Lambda', menu=lambda_menu)
-		menu.add_command(label='Regex', command=self.find_regex)
-		menu.add_cascade(label='Themes', menu=themes_menu)
-		menu.add_cascade(label='Help', menu=help_menu)
-		self.config(menu=menu)
+		self.menu.add_cascade(label='File', menu=file_menu)
+		self.menu.add_cascade(label='Edit', menu=self.edit_menu)
+		self.menu.add_cascade(label='Lambda', menu=lambda_menu)
+		self.menu.add_command(label='Regex', command=self.find_regex)
+		self.menu.add_cascade(label='Themes', menu=themes_menu)
+		self.menu.add_cascade(label='Help', menu=help_menu)
+		self.config(menu=self.menu)
 
-		self.context_menu = tk.Menu(self, tearoff=0)
+		self.context_menu = tk.Menu(self, tearoff=0, postcommand=self.enable_selection)
 		self.context_menu.add_command(label='Cut', command=self.cut_text)
 		self.context_menu.add_command(label='Copy', command=self.copy_text)
 		self.context_menu.add_command(label='Paste', command=self.paste_text)
@@ -551,6 +551,25 @@ class TextEditor(tk.Tk):
 				file.write(content)
 			win32api.ShellExecute(0,"print",filename,'"%s"' % win32print.GetDefaultPrinter (),
 					".",0)
+
+	def enable_selection(self):
+		state_selection = tk.ACTIVE if self.textbox.tag_ranges(tk.SEL) else tk.DISABLED
+		state_clipboard = tk.ACTIVE
+
+		try:
+			self.clipboard_get()
+		except tk.TclError:
+			state_clipboard = tk.DISABLED
+
+		self.context_menu.entryconfig(0, state=state_selection) # Cut
+		self.context_menu.entryconfig(1, state=state_selection) # Copy
+		self.context_menu.entryconfig(2, state=state_clipboard) # Paste
+		self.context_menu.entryconfig(3, state=state_selection) # Delete
+
+		self.edit_menu.entryconfig(0, state=state_selection) # Cut
+		self.edit_menu.entryconfig(1, state=state_selection) # Copy
+		self.edit_menu.entryconfig(2, state=state_clipboard) # Paste
+		self.edit_menu.entryconfig(4, state=state_selection) # Delete
 
 	def show_popup(self, event):
 		self.context_menu.post(event.x_root, event.y_root)
