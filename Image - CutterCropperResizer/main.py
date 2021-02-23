@@ -25,12 +25,19 @@ class Application(tk.Frame):
 
 		self.x = tk.IntVar()
 		self.y = tk.IntVar()
+		self.x1 =tk.IntVar()
+		self.y1 =tk.IntVar()
 		self.tilewidth = tk.IntVar()
 		self.tileheight = tk.IntVar()
 		self.tilewidth.set(24)
 		self.tileheight.set(24)
 		self.rows = tk.IntVar()
 		self.columns = tk.IntVar()
+		self.first = None
+		self.second = None
+
+		self.original_imsize = (0,0)
+		self.drag = True
 
 		self.draw_frames()
 		self.draw_canvas()
@@ -82,8 +89,8 @@ class Application(tk.Frame):
 		self.scrolly.configure(command=self.canvas.yview)
 		self.scrollx.configure(command=self.canvas.xview)
 
-		self.canvas.bind('<ButtonPress-1>', lambda event: self.canvas.scan_mark(event.x, event.y))
-		self.canvas.bind("<B1-Motion>", lambda event: self.canvas.scan_dragto(event.x, event.y, gain=1))
+		self.canvas.bind('<ButtonPress-1>', lambda event: self._get_position(event))
+		self.canvas.bind("<B1-Motion>", lambda event: self._drag(event))
 
 	def draw_options_frame(self):
 		self.open = ttk.Button(self.options_frame, text='Open', width=12, command=self.open_img)
@@ -103,7 +110,7 @@ class Application(tk.Frame):
 		self.scaler['variable'] = self.zoom_val
 		self.scaler.set(100)
 		self.scaler.bind("<ButtonRelease-1>", self.do_zoom)
-		self.scaler.grid(row=2, column=0, columnspan=2, pady=5)
+		self.scaler.grid(row=2, column=0, columnspan=1, pady=5)
 		self.scaler.grid_forget()
 
 	def draw_header_frame(self):
@@ -127,6 +134,14 @@ class Application(tk.Frame):
 	def draw_variable_frame(self):
 		for widget in self.variable_frame.winfo_children():
 			widget.destroy()
+
+		if self.lines:
+			for id_ in self.lines:
+				self.canvas.delete(id_)
+			self.lines.clear()
+
+		self.first = None
+		self.second = None
 
 		opt = self.crop_option.get()
 
@@ -175,7 +190,42 @@ class Application(tk.Frame):
 						).grid(row=1, column=3)
 
 			ttk.Button(self.variable_frame, text='Draw Rect', command=self.draw_rect).grid(
-							row=2,column=0, columnspan=4)
+							row=2,column=0, columnspan=4, pady=5)
+
+		if opt == 4:
+			self.x.set(0)
+			self.y.set(0)
+			self.x1.set(0)
+			self.y1.set(0)
+
+			tk.Label(self.variable_frame, text='x', width=8).grid(row=0, column=0)
+			self.pos1 = ttk.Entry(self.variable_frame, width=4,textvariable=self.x)
+			self.pos1.grid(row=0, column=1)
+
+			tk.Label(self.variable_frame, text='y', width=8).grid(row=0, column=2)
+			self.pos2 = ttk.Entry(self.variable_frame, width=4,textvariable=self.y)
+			self.pos2.grid(row=0, column=3)
+
+			tk.Label(self.variable_frame, text='width', width=8).grid(row=1, column=0)
+			self.pos3 = ttk.Entry(self.variable_frame, width=4,textvariable=self.x1)
+			self.pos3.grid(row=1, column=1)
+
+			tk.Label(self.variable_frame, text='height', width=8).grid(row=1, column=2)
+			self.pos4 = ttk.Entry(self.variable_frame, width=4,textvariable=self.y1)
+			self.pos4.grid(row=1, column=3)
+
+			self.posbtn1 = ttk.Button(self.variable_frame, text='Update Rect', command=self.update_rect)
+			self.posbtn1.grid(row=2,column=0, columnspan=2, pady=5)
+
+			self.posbtn2 = ttk.Button(self.variable_frame, text='Clear Rect', command=self.clear_rect)
+			self.posbtn2.grid(row=2,column=2, columnspan=2, pady=5)
+
+			self.pos1.config(state=tk.DISABLED)
+			self.pos2.config(state=tk.DISABLED)
+			self.pos3.config(state=tk.DISABLED)
+			self.pos4.config(state=tk.DISABLED)
+			self.posbtn1.config(state=tk.DISABLED)
+			self.posbtn2.config(state=tk.DISABLED)
 
 	def open_img(self):
 		filetypes = (("Images","*.png .jpg"),)
@@ -184,6 +234,7 @@ class Application(tk.Frame):
 			self.filepath = path
 			self.imobject = ImageProcessor(self.filepath)
 			self.image, size = self.imobject.display_image()
+			self.original_imsize = tuple(size)
 			self.canvas.create_image(0, 0, anchor='nw', image=self.image)
 
 			self.header['text'] = os.path.basename(self.filepath)
@@ -208,12 +259,12 @@ class Application(tk.Frame):
 		self.image = self.imobject.zoom(factor)
 		self.canvas.create_image(0, 0, anchor='nw', image=self.image)
 
-		region = self.canvas.bbox(tk.ALL)
-		self.canvas.configure(scrollregion=region)
-
-	def show_option(self):
-		print(self.tilewidth.get())
-		print(self.self.tileheight.get())
+		region = list(self.canvas.bbox(tk.ALL))
+		if region[-2] <= self.original_imsize[0]:
+			region[-2] = self.image.width() + 10
+		if region[-1] <= self.original_imsize[1]:
+			region[-1] = 480
+		self.canvas.configure(scrollregion=tuple(region))
 
 	def draw_tiles(self):
 		if self.lines:
@@ -285,6 +336,71 @@ class Application(tk.Frame):
 
 		id_ = self.canvas.create_rectangle(x,y, x+width_, y+height, outline='dodgerblue3', width=2)
 		self.lines.append(id_)
+
+	def update_rect(self):
+		if self.lines:
+			for id_ in self.lines:
+				self.canvas.delete(id_)
+			self.lines.clear()
+
+		x = self.x.get()
+		y = self.y.get()
+		x1 = self.x1.get()
+		y1 = self.y1.get()
+
+		id_ = self.canvas.create_rectangle(x,y, x1, y1, outline='dodgerblue3', width=2)
+		self.lines.append(id_)
+
+	def clear_rect(self):
+		if self.lines:
+			for id_ in self.lines:
+				self.canvas.delete(id_)
+			self.lines.clear()
+
+		self.pos1.config(state=tk.DISABLED)
+		self.pos2.config(state=tk.DISABLED)
+		self.pos3.config(state=tk.DISABLED)
+		self.pos4.config(state=tk.DISABLED)
+		self.posbtn1.config(state=tk.DISABLED)
+		self.posbtn2.config(state=tk.DISABLED)
+
+		self.first = None
+		self.second = None
+
+	def _get_position(self, event=None):
+		x, y = event.x, event.y
+		opt = self.crop_option.get()
+		if opt in (1,2,3):
+			self.canvas.scan_mark(event.x, event.y)
+			self.drag = True
+		else:
+			if self.image:
+				self.drag = False
+				
+				if not self.first:
+					self.first = (event.x, event.y)
+					self.x.set(event.x)
+					self.y.set(event.y)
+
+					id_ = self.canvas.create_oval(x-1,y-1,x+2,y+2, fill='dodgerblue3')
+					self.lines.append(id_)
+					self.posbtn2.config(state=tk.NORMAL)
+				else:
+					self.pos1.config(state=tk.NORMAL)
+					self.pos2.config(state=tk.NORMAL)
+					self.pos3.config(state=tk.NORMAL)
+					self.pos4.config(state=tk.NORMAL)
+					self.posbtn1.config(state=tk.NORMAL)
+
+					self.second = (event.x, event.y)
+					self.x1.set(event.x)
+					self.y1.set(event.y)
+
+					self.update_rect()
+
+	def _drag(self, event=None):
+		if self.drag:
+			self.canvas.scan_dragto(event.x, event.y, gain=1)
 
 	def _bound_to_mousewheel(self, event):
 		self.canvas.bind_all("<MouseWheel>", self._on_mousewheel)   
