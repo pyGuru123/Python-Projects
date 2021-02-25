@@ -1,10 +1,8 @@
-# Image Cutter & Resizer
+# Image Cutter, Cropper & Resizer
 
-Image Cutter & Resizer is a simple python tkinter based application to resize and divide imagesin equal parts
+Image Cutter, Cropper & Resizer is a simple python tkinter based application to cut, crop, resize and divide images in equal parts
 
 ![Alt text](app.png?raw=true "Image Cutter & Resizer")
-
-Page zooming and navigation, opening recently opened files is also possible. Moonlight PDF Reader leverages the features of muPDF library which is available in python under pymupdf name
 
 ## How to Download
 
