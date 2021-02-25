@@ -17,6 +17,10 @@ love this repo.
 	> A simple covid spread visualizer made with tkintr, pandas & matplotlib.\
 	> Link to project : [Covid Tracker](https://github.com/pyGuru123/Python-Projects/tree/master/Covid%20Tracker)
 
+* ## Image Cutter Cropper Resizer
+	> A simple app to divide, crop and resize images.\
+	> Link to project : [Image Cutter](https://github.com/pyGuru123/Python-Projects/tree/master/Image%20-%20CutterCropperResizer)
+
 * ## Moonlight
 	> A full fledged PDF viewer and editor with lots of advanced features made with pymupdf.\
 	> Link to project : [Moonlight](https://github.com/pyGuru123/Python-Projects/tree/master/Moonlight%20PDF%20Reader)

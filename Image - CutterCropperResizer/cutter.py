@@ -21,8 +21,12 @@ class ImageProcessor:
 			img = self.img.resize((basewidth,hsize), Image.ANTIALIAS)
 			return ImageTk.PhotoImage(img)
 
-	def resize_image(self, width, height):
+	def resize_image(self, width, height, save=False):
 		img = self.img.resize((width, height), Image.ANTIALIAS )
+		if save:
+			name = os.path.basename(self.path)[:-4]
+			img.save(f'{name}-resized.png')
+			self.img = img
 		image, size = self.display_image(img)
 		return image, size
 

@@ -105,13 +105,6 @@ class Application(tk.Frame):
 						command=self.resize_frame)
 		self.resize.grid(row=0, column=1, padx=(5,0), pady=(4,0))
 
-		self.crop = ttk.Button(self.options_frame, text='Crop', width=12, state=tk.DISABLED)
-		self.crop.grid(row=1, column=0, padx=(5,0), pady=(4,0))
-
-		self.save = ttk.Button(self.options_frame, text='Save Sprites', width=12, state=tk.DISABLED,
-					command=self.do_zoom)
-		self.save.grid(row=1, column=1, padx=(5,0), pady=(4,0))
-
 		self.scaler = ttk.Scale(self.options_frame, from_=5, to=160, orient=tk.HORIZONTAL)
 		self.scaler['variable'] = self.zoom_val
 		self.scaler.set(100)
@@ -246,6 +239,10 @@ class Application(tk.Frame):
 			self.posbtn2.config(state=tk.DISABLED)
 
 	def resize_frame(self):
+		for id_ in self.lines:
+			self.canvas.delete(id_)
+			self.lines.clear()
+
 		for widget in self.editor_frame.winfo_children():
 			widget.destroy()
 
@@ -253,26 +250,26 @@ class Application(tk.Frame):
 		self.imheight.set(100)
 
 		tk.Label(self.editor_frame, text=f'Current Size : {self.original_imsize[0]}x{self.original_imsize[1]}'
-			).grid(row=0, column=0, columnspan=2, pady=5)
+			).grid(row=0, column=0, columnspan=2, pady=5, padx=35)
 
-		tk.Label(self.editor_frame, text='width', width=8).grid(row=1, column=0)
+		tk.Label(self.editor_frame, text='width', width=8).grid(row=1, column=0, pady=(10,5))
 		ttk.Entry(self.editor_frame, width=4,textvariable=self.imwidth
-					).grid(row=1, column=1)
+					).grid(row=1, column=1, pady=(10,0))
 		tk.Label(self.editor_frame, text='height', width=8).grid(row=2, column=0)
 		ttk.Entry(self.editor_frame, width=4,textvariable=self.imheight
 					).grid(row=2, column=1)
 
 		ttk.Button(self.editor_frame, text='Resize', command=self.resize_image).grid(
-					row=3, column=0, columnspan=2)
+					row=3, column=0, columnspan=2, pady=(10,0))
 
 		ttk.Button(self.editor_frame, text='Undo', command=self.undo).grid(
-					row=4, column=0, columnspan=2)
+					row=4, column=0, columnspan=2, pady=(10,0))
 
 		ttk.Button(self.editor_frame, text='Save', command=self.save_resize).grid(
-					row=5, column=0, columnspan=2)
+					row=5, column=0, columnspan=2, pady=(10,0))
 
 		ttk.Button(self.editor_frame, text='Back', command=self.back).grid(
-					row=6, column=0, columnspan=2)
+					row=6, column=0, columnspan=2, pady=(10,0))
 
 	def open_img(self):
 		filetypes = (("Images","*.png .jpg"),)
@@ -291,9 +288,6 @@ class Application(tk.Frame):
 			self.canvas.configure(scrollregion=region)
 
 			self.resize.config(state=tk.NORMAL)
-			self.crop.config(state=tk.NORMAL)
-			self.save.config(state=tk.NORMAL)
-
 			self.scaler.grid(row=2, column=0, columnspan=2, pady=5)
 
 	def do_zoom(self, event=None):
@@ -492,11 +486,11 @@ class Application(tk.Frame):
 			if x and y and x1 and y1:
 				self.imobject.dividebyrect(imwidth, imheight, x, y, x1, y1)
 
-	def resize_image(self):
+	def resize_image(self, save=False):
 		width = self.imwidth.get()
 		height = self.imheight.get()
 
-		self.image, self.imsize = self.imobject.resize_image(width, height)
+		self.image, self.imsize = self.imobject.resize_image(width, height, save)
 		self.original_imsize = tuple(self.imsize)
 		self.canvas.create_image(0, 0, anchor='nw', image=self.image)
 
@@ -512,19 +506,18 @@ class Application(tk.Frame):
 		self.canvas.configure(scrollregion=region)
 
 	def save_resize(self):
-		pass
+		self.resize_image(save=True)
 
 	def back(self):
 		for widget in self.editor_frame.winfo_children():
 			widget.destroy()
 
 		self.draw_editor()
-		self.draw_options_frame()
 		self.draw_header_frame()
 		self.draw_menu_frame()
 
 		self.header['text'] = os.path.basename(self.filepath)
-		self.size['text'] = f'{size[0]}x{size[1]}'
+		self.size['text'] = f'{self.original_imsize[0]}x{self.original_imsize[1]}'
 
 	def _drag(self, event=None):
 		if self.drag:
