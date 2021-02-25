@@ -35,11 +35,15 @@ class Application(tk.Frame):
 		self.columns = tk.IntVar()
 		self.first = None
 		self.second = None
+		self.imwidth = tk.IntVar()
+		self.imheight = tk.IntVar()
+		self.imsize = None
 
 		self.original_imsize = (0,0)
 		self.drag = True
 
 		self.draw_frames()
+		self.draw_editor()
 		self.draw_canvas()
 		self.draw_options_frame()
 		self.draw_header_frame()
@@ -55,7 +59,7 @@ class Application(tk.Frame):
 		self.canvas_frame.grid(row=0, column=1, rowspan=2)
 		self.canvas_frame.grid_propagate(False)
 
-		self.editor_frame = tk.Frame(self, width=200, height=400, bg='green')
+		self.editor_frame = tk.Frame(self, width=200, height=400, bg='white')
 		self.editor_frame.grid(row=0, column=2)
 		self.editor_frame.grid_propagate(False)
 
@@ -63,15 +67,16 @@ class Application(tk.Frame):
 		self.options_frame.grid(row=1, column=2)
 		self.options_frame.grid_propagate(False)
 
-		self.header_frame = tk.Frame(self.editor_frame, width=200, height=50, bg='white')
+	def draw_editor(self):
+		self.header_frame = tk.Frame(self.editor_frame, width=200, height=60, bg='white')
 		self.header_frame.grid(row=0, column=0)
 		self.header_frame.grid_propagate(False)
 
-		self.menu_frame = tk.Frame(self.editor_frame, width=200, height=110, bg='white')
+		self.menu_frame = tk.Frame(self.editor_frame, width=200, height=140, bg='white')
 		self.menu_frame.grid(row=1, column=0)
 		self.menu_frame.grid_propagate(False)
 
-		self.variable_frame = tk.Frame(self.editor_frame, width=200, height=100, bg='white')
+		self.variable_frame = tk.Frame(self.editor_frame, width=200, height=200, bg='white')
 		self.variable_frame.grid(row=2, column=0)
 		self.variable_frame.grid_propagate(False)
 
@@ -96,7 +101,8 @@ class Application(tk.Frame):
 		self.open = ttk.Button(self.options_frame, text='Open', width=12, command=self.open_img)
 		self.open.grid(row=0, column=0, padx=(5,0), pady=(4,0))
 
-		self.resize = ttk.Button(self.options_frame, text='Resize', width=12, state=tk.DISABLED)
+		self.resize = ttk.Button(self.options_frame, text='Resize', width=12, state=tk.DISABLED,
+						command=self.resize_frame)
 		self.resize.grid(row=0, column=1, padx=(5,0), pady=(4,0))
 
 		self.crop = ttk.Button(self.options_frame, text='Crop', width=12, state=tk.DISABLED)
@@ -158,6 +164,9 @@ class Application(tk.Frame):
 
 			ttk.Button(self.variable_frame, text='Draw Tiles', command=self.draw_tiles).grid(
 							row=2,column=0, columnspan=2)
+
+			ttk.Button(self.variable_frame, text='Cut Tiles', command=self.cut_tiles_by_tile).grid(
+							row=3,column=0, columnspan=2)
 		if opt == 2:
 			tk.Label(self.variable_frame, text='Num Rows', width=12).grid(row=0, column=0, padx=5)
 			ttk.Entry(self.variable_frame, width=5,textvariable=self.rows
@@ -168,6 +177,9 @@ class Application(tk.Frame):
 
 			ttk.Button(self.variable_frame, text='Draw Rows & Columns', command=self.draw_rc).grid(
 							row=2,column=0, columnspan=2)
+
+			ttk.Button(self.variable_frame, text='Cut Tiles', command=self.cut_tiles_by_rc).grid(
+							row=3,column=0, columnspan=2)
 
 		if opt == 3:
 			self.x.set(0)
@@ -191,6 +203,9 @@ class Application(tk.Frame):
 
 			ttk.Button(self.variable_frame, text='Draw Rect', command=self.draw_rect).grid(
 							row=2,column=0, columnspan=4, pady=5)
+
+			ttk.Button(self.variable_frame, text='Cut Tile', command=self.cut_tiles_custom).grid(
+							row=3,column=0, columnspan=4)
 
 		if opt == 4:
 			self.x.set(0)
@@ -220,12 +235,44 @@ class Application(tk.Frame):
 			self.posbtn2 = ttk.Button(self.variable_frame, text='Clear Rect', command=self.clear_rect)
 			self.posbtn2.grid(row=2,column=2, columnspan=2, pady=5)
 
+			ttk.Button(self.variable_frame, text='Cut Tile', command=self.cut_tiles_by_rect).grid(
+							row=3,column=0, columnspan=4)
+
 			self.pos1.config(state=tk.DISABLED)
 			self.pos2.config(state=tk.DISABLED)
 			self.pos3.config(state=tk.DISABLED)
 			self.pos4.config(state=tk.DISABLED)
 			self.posbtn1.config(state=tk.DISABLED)
 			self.posbtn2.config(state=tk.DISABLED)
+
+	def resize_frame(self):
+		for widget in self.editor_frame.winfo_children():
+			widget.destroy()
+
+		self.imwidth.set(100)
+		self.imheight.set(100)
+
+		tk.Label(self.editor_frame, text=f'Current Size : {self.original_imsize[0]}x{self.original_imsize[1]}'
+			).grid(row=0, column=0, columnspan=2, pady=5)
+
+		tk.Label(self.editor_frame, text='width', width=8).grid(row=1, column=0)
+		ttk.Entry(self.editor_frame, width=4,textvariable=self.imwidth
+					).grid(row=1, column=1)
+		tk.Label(self.editor_frame, text='height', width=8).grid(row=2, column=0)
+		ttk.Entry(self.editor_frame, width=4,textvariable=self.imheight
+					).grid(row=2, column=1)
+
+		ttk.Button(self.editor_frame, text='Resize', command=self.resize_image).grid(
+					row=3, column=0, columnspan=2)
+
+		ttk.Button(self.editor_frame, text='Undo', command=self.undo).grid(
+					row=4, column=0, columnspan=2)
+
+		ttk.Button(self.editor_frame, text='Save', command=self.save_resize).grid(
+					row=5, column=0, columnspan=2)
+
+		ttk.Button(self.editor_frame, text='Back', command=self.back).grid(
+					row=6, column=0, columnspan=2)
 
 	def open_img(self):
 		filetypes = (("Images","*.png .jpg"),)
@@ -398,6 +445,87 @@ class Application(tk.Frame):
 
 					self.update_rect()
 
+	def cut_tiles_by_tile(self):
+		if self.image:
+			imwidth = self.image.width()
+			imheight = self.image.height()
+			twidth = self.tilewidth.get()
+			theight = self.tileheight.get()
+
+			self.imobject.dividebytile(imwidth, imheight,twidth, theight)
+
+	def cut_tiles_by_rc(self):
+		if self.image:
+			imwidth = self.image.width()
+			imheight = self.image.height()
+			rows = self.rows.get()
+			columns = self.columns.get()
+
+			if rows == 0:
+				rows = 1
+			if columns == 0:
+				columns = 1
+
+			self.imobject.dividebyrc(imwidth, imheight,rows, columns)
+
+	def cut_tiles_custom(self):
+		if self.image:
+			imwidth = self.image.width()
+			imheight = self.image.height()
+			x = self.x.get()
+			y = self.y.get()
+			width_ = self.tilewidth.get()
+			height = self.tileheight.get()
+
+			if width_ and height:
+				self.imobject.dividecustom(imwidth, imheight, x, y, width_, height)
+
+	def cut_tiles_by_rect(self):
+		if self.image:
+			imwidth = self.image.width()
+			imheight = self.image.height()
+			x = self.x.get()
+			y = self.y.get()
+			x1 = self.x1.get()
+			y1 = self.y1.get()
+
+			if x and y and x1 and y1:
+				self.imobject.dividebyrect(imwidth, imheight, x, y, x1, y1)
+
+	def resize_image(self):
+		width = self.imwidth.get()
+		height = self.imheight.get()
+
+		self.image, self.imsize = self.imobject.resize_image(width, height)
+		self.original_imsize = tuple(self.imsize)
+		self.canvas.create_image(0, 0, anchor='nw', image=self.image)
+
+		region = self.canvas.bbox(tk.ALL)
+		self.canvas.configure(scrollregion=region)
+
+	def undo(self):
+		self.image, self.imsize = self.imobject.display_image()
+		self.original_imsize = tuple(self.imsize)
+		self.canvas.create_image(0, 0, anchor='nw', image=self.image)
+
+		region = self.canvas.bbox(tk.ALL)
+		self.canvas.configure(scrollregion=region)
+
+	def save_resize(self):
+		pass
+
+	def back(self):
+		for widget in self.editor_frame.winfo_children():
+			widget.destroy()
+
+		self.draw_editor()
+		self.draw_options_frame()
+		self.draw_header_frame()
+		self.draw_menu_frame()
+
+		self.header['text'] = os.path.basename(self.filepath)
+		self.size['text'] = f'{size[0]}x{size[1]}'
+
 	def _drag(self, event=None):
 		if self.drag:
 			self.canvas.scan_dragto(event.x, event.y, gain=1)
@@ -425,6 +553,7 @@ if __name__ == '__main__':
 	root = tk.Tk()
 	root.geometry('800x500+200+100')
 	root.title('Sprite Cutter')
+	root.resizable(0,0)
 
 	app = Application(master=root)
 	app.mainloop()
