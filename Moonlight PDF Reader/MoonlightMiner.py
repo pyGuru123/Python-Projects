@@ -19,23 +19,23 @@ class Miner:
 
 	def read_pdf(self):
 		metadata = self.pdf.metadata
-		numPages = self.pdf.pageCount
-		toc = self.pdf.getToC()
+		numPages = self.pdf.page_count
+		toc = self.pdf.get_toc()
 		
-		page = self.pdf.loadPage(0)
-		pagesize = page.MediaBoxSize
+		page = self.pdf.load_page(0)
+		pagesize = page.mediabox_size
 
 		return metadata, numPages, toc, tuple(pagesize)
 
 	def get_page(self, page_num, zoom=None):
-		page = self.pdf.loadPage(page_num)
+		page = self.pdf.load_page(page_num)
 		if zoom:
 			mat = fitz.Matrix(zoom, zoom)
-			pix = page.getPixmap(matrix=mat)
+			pix = page.get_pixmap(matrix=mat)
 		else:
-			pix = page.getPixmap()
+			pix = page.get_pixmap()
 		px1 = fitz.Pixmap(pix, 0) if pix.alpha else pix
-		imgdata = px1.getImageData('ppm')
+		imgdata = px1.tobytes('ppm')
 		return PhotoImage(data=imgdata)
 
 	def get_text(self, page_num, format_):

@@ -17,7 +17,11 @@ Download this project from here [Download Coastline Text Editor](https://downgit
 
 ## Requirements
 
-No external package is required
+pywin32 : Use the package manager [pip](https://pip.pypa.io/en/stable/) to install pywin32.
+
+```bash
+pip install pywin32
+```
 
 ## Usage
 
