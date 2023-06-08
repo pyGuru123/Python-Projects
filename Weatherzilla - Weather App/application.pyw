@@ -41,44 +41,6 @@ class CustomLabel(tk.Label):
         )
 
 
-# class AutocompleteEntry(tk.Entry):
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         # self.suggestions = suggestions
-#         self.matches = []  # hold suggestions that match entered txt
-#         self.current_match = tk.StringVar()  # stores currently selected suggestion
-#         self.current_match.set("")
-
-#         self.bind("<KeyRelease>", self.autocomplete)
-#         self.bind(
-#             "<Down>", self.cycle_matches
-#         )  # allows cycling through the available matches.
-
-#     def autocomplete(self, event):
-#         entered_text = self.get().lower()
-#         self.matches = [
-#             suggestion
-#             for suggestion in self.suggestions
-#             if suggestion.lower().startswith(entered_text)
-#         ]
-
-#         if self.matches:
-#             self.current_match.set(self.matches[0])
-#             self.icursor(tk.END)
-#             self.select_range(len(entered_text), tk.END)
-#         else:
-#             self.current_match.set("")
-
-#     def cycle_matches(self, event):
-#         if self.matches:
-#             current_index = self.matches.index(self.current_match.get())
-#             next_index = (current_index + 1) % len(self.matches)
-#             self.current_match.set(self.matches[next_index])
-
-#     def set_suggestions(self, suggestions):
-#         self.suggestions = suggestions
-
-
 class Application(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master=master)
@@ -202,22 +164,7 @@ class Application(tk.Frame):
         )
         self.search_label.grid(row=0, column=0, ipady=8, padx=(10, 2))
 
-        # autocomplete_suggestions = [
-        #     "New York",
-        #     "London",
-        #     "Lucknow" "Paris",
-        #     "Tokyo",
-        #     "New Delhi",
-        # ]
-        # self.entry = AutocompleteEntry(
-        #     self.search_frame,  # dont change this affects pos of search bar
-        #     autocomplete_suggestions,
-        #     textvariable=self.city,  # Use self.city as textvariable
-        #     width=20,  # Set the desired widt
-        # )
-        # self.entry.bind("<Return>", self.get_weather)
-        # self.entry.set_suggestions(autocomplete_suggestions)
-        city_names = ["New York", "Los Angeles", "London", "Paris", "Tokyo"]
+        city_names = ["New York", "Los Angeles", "London", "Paris", "Tokyo", "nagaland"]
 
         self.entry = ttk.Combobox(
             self.search_frame,
@@ -259,27 +206,6 @@ class Application(tk.Frame):
         )
         self.city_label.grid(row=0, column=3, ipady=3, padx=(41, 0))
 
-    # root = tk.Tk()
-    # search_var = tk.StringVar()
-    # search_combobox = ttk.Combobox(root, textvariable=search_var)
-
-    # def on_search(event, search_var, search_combobox, xity_names):
-    #     entered_text = search_var.get()
-    #     suggestions = []
-    #     for city in city_names:
-    #         if city.lower().startswith(entered_text.lower()):
-    #             suggestions.append(city)
-    #     search_combobox["values"] = suggestions
-
-    # city_names = ["New York", "Los Angeles", "London", "Paris", "Tokyo"]
-    # search_combobox.autocomplete = True
-    # search_combobox.bind("<<ComboboxSelected>>", on_search)
-    # search_combobox.bind(
-    #     "<KeyRelease>", on_search
-    # )  # Optionally trigger on each key release
-    # search_combobox["values"] = city_names
-    # root.mainloop()
-
     def current_time(self):
         dt = datetime.datetime.now()
         self.time_label["text"] = dt.strftime("%I:%M:%S %p")
@@ -291,18 +217,6 @@ class Application(tk.Frame):
 
     def weather_search(self):
         self.get_weather()
-        # city_prefix = self.city.get()
-        # if len(city_prefix) > 2:
-        #     autocomplete_url = f"http://api.openweathermap.org/geo/1.0/direct?q={city_prefix}&limit=5&appid={api_key}"
-        # try:
-        #     response = requests.get(autocomplete_url)
-        #     suggestions = [city["name"] for city in response.json()]
-        #     self.entry["values"] = suggestions
-        #     self.entry.event_generate("<Down>")  # Show dropdown suggestions
-        # except:
-        #     messagebox.showerror(
-        #         "Weatherzilla", "Failed to fetch autocomplete suggestions"
-        #     )
 
     def get_weather(self, event=None):
         city = self.entry.get()
