@@ -6,6 +6,7 @@ import tkinter as tk
 from tkinter import PhotoImage
 from tkinter import messagebox
 from tkinter import ttk
+import geonamescache
 
 import requests
 from PIL import Image
@@ -164,7 +165,9 @@ class Application(tk.Frame):
         )
         self.search_label.grid(row=0, column=0, ipady=8, padx=(10, 2))
 
-        city_names = ["New York", "Los Angeles", "London", "Paris", "Tokyo", "nagaland"]
+        gc = geonamescache.GeonamesCache()
+        cities = gc.get_cities()
+        city_names = [city["name"] for city in cities.values()]
 
         self.entry = ttk.Combobox(
             self.search_frame,
