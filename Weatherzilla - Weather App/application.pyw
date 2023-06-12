@@ -12,7 +12,7 @@ import requests
 from PIL import Image
 from PIL import ImageTk
 
-api_key = "f3d5bb64b5f26365f0d033f3e4e0ef96"
+api_key = ""
 
 
 class CustomFrame(tk.Frame):
