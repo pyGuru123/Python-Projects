@@ -180,7 +180,6 @@ class Application(tk.Frame):
                     suggestions.append(city)
             self.entry["values"] = suggestions
 
-        self.entry.autocomplete = True
         self.entry.bind("<<ComboboxSelected>>", on_search)
         self.entry.bind("<KeyRelease>", on_search)
         self.entry.focus_set()
@@ -189,7 +188,7 @@ class Application(tk.Frame):
         self.search = tk.Button(
             self.search_frame,
             image=search_icon,
-            command=self.weather_search,  # wjen button is called this func has to be called
+            command=self.weather_search,  # when button is called this func has to be called
             relief=tk.FLAT,
             bg="DodgerBlue2",
         )
